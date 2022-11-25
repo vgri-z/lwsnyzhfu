@@ -4,7 +4,7 @@
       <div class="text">{{ info.name }}</div>
       <div class="title-right" v-if="isShowTitleRight">
         <slot name="title-right">
-          <img :src="info.icon" alt="" />
+          <img :src="info.icon" width="21" height="19" alt="" />
         </slot>
       </div>
     </div>
@@ -76,10 +76,12 @@ export default {
     }
 
     .title-right {
-      img {
-        width: 21px;
-        height: 19px;
-      }
+      display: flex;
+      align-items: center;
+      // img {
+      //   width: 21px;
+      //   height: 19px;
+      // }
     }
   }
   .card-content {

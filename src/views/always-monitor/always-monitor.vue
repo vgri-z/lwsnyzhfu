@@ -1,7 +1,7 @@
 <!-- 数据总览 -->
 <template>
   <div class="data-summary">
-    <TopHeader />
+    <TopHeader :tabs="tabs" />
     <div class="content">
       <div class="top">
         <div v-for="(item, index) in infos" :key="index" class="top-item">
@@ -12,7 +12,7 @@
         <div class="middle-left">
           <card :info="middleInfo1">
             <template v-slot:title-right>
-              <div style="color: #ffffff; opacity: 0.4">单位：亩</div>
+              <div style="color: #ffffff; opacity: 0.4">单位：百分比</div>
             </template>
             <template v-slot:content>
               <div ref="chartRef1" style="width: 100%; height: 100%"></div>
@@ -21,6 +21,16 @@
         </div>
         <div class="middle-right">
           <card :info="middleInfo2">
+            <template v-slot:title-right>
+              <img src="../../assets/img/warn1.png" width="30" height="30" alt="" />
+            </template>
+            <template v-slot:content> </template>
+          </card>
+        </div>
+      </div>
+      <div class="bottom">
+        <div class="bottom-left">
+          <card :info="bottomInfo1">
             <template v-slot:title-right>
               <div class="legend" style="color: #fff">
                 <div class="dot">
@@ -38,33 +48,12 @@
             </template>
           </card>
         </div>
-      </div>
-      <div class="bottom">
-        <div class="bottom-left">
-          <card :info="bottomInfo1">
-            <template v-slot:title-right>
-              <div style="color: #fff">单位：百分比</div>
-            </template>
-            <template v-slot:content>
-              <div ref="chartRef3" style="width: 100%; height: 100%"></div>
-            </template>
-          </card>
-        </div>
-        <div class="bottom-middle">
+        <div class="bottom-right">
           <card :info="bottomInfo2">
             <template v-slot:title-right>
-              <div style="color: #fff">单位：亩</div>
+              <img src="../../assets/img/warn2.png" width="30" height="23" alt="" />
             </template>
-            <template v-slot:content>
-              <div ref="chartRef4" style="width: 100%; height: 100%"></div>
-            </template>
-          </card>
-        </div>
-        <div class="bottom-right">
-          <card :is-show-title="false">
-            <template v-slot:content>
-              <div ref="chartRef5" style="width: 100%; height: 100%"></div>
-            </template>
+            <template v-slot:content> </template>
           </card>
         </div>
       </div>
@@ -76,12 +65,12 @@
 import TopHeader from "../../components/top-header/top-header.vue";
 import Card from "../../components/card/card.vue";
 import * as echarts from "echarts";
-import { options1, options2, options3, options4, options5 } from "./config/chart.config";
-import { nxMapOption } from "./config/map.config";
+import { options1, options2 } from "./config/chart.config";
 export default {
   components: { TopHeader, Card },
   data() {
     return {
+      tabs: ["可视化演示", "实时监测", "数据总览"],
       infos: [
         { name: "总作业亩数", icon: require("../../assets/img/card.png"), value: "20", unit: "万亩" },
         { name: "总农机数量", icon: require("../../assets/img/card.png"), value: "50", unit: "台" },
@@ -89,28 +78,19 @@ export default {
         { name: "农资销量", icon: require("../../assets/img/card.png"), value: "1.16", unit: "万吨" },
         { name: "废弃物回收", icon: require("../../assets/img/card.png"), value: "50", unit: "万吨" },
       ],
-      middleInfo1: { name: "在田种植规模分析" },
-      middleInfo2: { name: "农废产生统计" },
-      bottomInfo1: { name: "可回收物统计" },
-      bottomInfo2: { name: "农废产生统计" },
+      middleInfo1: { name: "农田生态系统管理" },
+      middleInfo2: { name: "生态监测" },
+      bottomInfo1: { name: "作物长势检测" },
+      bottomInfo2: { name: "害虫监测" },
       options1,
       options2,
-      options3,
-      options4,
-      options5: nxMapOption,
       myChart1: null,
       myChart2: null,
-      myChart3: null,
-      myChart4: null,
-      myChart5: null,
     };
   },
   mounted() {
     this.setOptions1();
     this.setOptions2();
-    this.setOptions3();
-    this.setOptions4();
-    this.setOptions5();
   },
   methods: {
     setOptions1() {
@@ -120,18 +100,6 @@ export default {
     setOptions2() {
       this.myChart2 = echarts.init(this.$refs.chartRef2);
       this.myChart2.setOption(this.options2);
-    },
-    setOptions3() {
-      this.myChart3 = echarts.init(this.$refs.chartRef3);
-      this.myChart3.setOption(this.options3);
-    },
-    setOptions4() {
-      this.myChart4 = echarts.init(this.$refs.chartRef4);
-      this.myChart4.setOption(this.options4);
-    },
-    setOptions5() {
-      this.myChart5 = echarts.init(this.$refs.chartRef5);
-      this.myChart5.setOption(this.options5);
     },
   },
 };
@@ -167,18 +135,29 @@ export default {
 
     .middle {
       width: 100%;
-      height: 390px;
+      height: 369px;
       margin-top: 13px;
       display: flex;
       .middle-left {
-        width: 1054px;
+        width: 733px;
         height: 100%;
         margin-right: 16px;
       }
 
       .middle-right {
+        width: 1054px;
+        height: 100%;
+      }
+    }
+    .bottom {
+      width: 100%;
+      height: 373px;
+      margin-top: 13px;
+      display: flex;
+      .bottom-left {
         width: 733px;
         height: 100%;
+        margin-right: 16px;
 
         .legend {
           display: flex;
@@ -203,27 +182,11 @@ export default {
           }
         }
       }
-    }
-    .bottom {
-      width: 100%;
-      height: 390px;
-      margin-top: 13px;
-      display: flex;
-      .bottom-left {
-        width: 654px;
-        height: 100%;
-        margin-right: 16px;
-      }
-
-      .bottom-middle {
-        width: 718px;
-        height: 100%;
-        margin-right: 16px;
-      }
 
       .bottom-right {
-        width: 403px;
+        width: 1054px;
         height: 100%;
+        margin-right: 16px;
       }
     }
   }

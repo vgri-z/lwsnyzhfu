@@ -6,7 +6,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/area-manage",
+    redirect: "/always-monitor",
   },
   {
     path: "/data-summary",
@@ -15,6 +15,10 @@ const routes = [
   {
     path: "/area-manage",
     component: () => import("../views/area-manage/area-manage.vue"),
+  },
+  {
+    path: "/always-monitor",
+    component: () => import("../views/always-monitor/always-monitor.vue"),
   },
 ];
 

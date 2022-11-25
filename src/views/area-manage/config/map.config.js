@@ -93,7 +93,7 @@ const nxMapOption = {
     realtime: false,
     inRange: {
       color: "#F4A460",
-      borderColor: "#a7a7a7", //边框颜色
+      borderColor: "#3bd8ff", //边框颜色
       borderWidth: 10,
     },
   },
@@ -102,11 +102,11 @@ const nxMapOption = {
     label: {
       show: true,
       color: "black",
-      fontSize: 10,
+      fontSize: 20,
     },
     itemStyle: {
-      areaColor: "#d6d4d5",
-      borderColor: "#a7a7a7",
+      areaColor: "#407c99",
+      borderColor: "#3bd8ff",
       borderWidth: 2,
     },
     emphasis: {
