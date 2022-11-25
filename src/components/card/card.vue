@@ -49,6 +49,7 @@ export default {
   height: 100%;
   border-radius: 10px;
   overflow: hidden;
+  background-color: #1e202f;
 
   .title {
     width: 100%;

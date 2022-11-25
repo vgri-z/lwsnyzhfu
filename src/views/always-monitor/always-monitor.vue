@@ -2,6 +2,21 @@
 <template>
   <div class="data-summary">
     <TopHeader :tabs="tabs" />
+    <div class="search">
+      <span class="text">时间：</span>
+      <div class="time">
+        <div class="year">
+          <span class="year-text">2022 年</span>
+          <img src="../../assets/img/arrow_down.png" alt="" />
+        </div>
+        <div class="split">-</div>
+        <div class="month">
+          <span class="month-text">6 月</span>
+          <img src="../../assets/img/arrow_down.png" alt="" />
+        </div>
+      </div>
+      <div class="search-btn">查询</div>
+    </div>
     <div class="content">
       <div class="top">
         <div v-for="(item, index) in infos" :key="index" class="top-item">
@@ -24,9 +39,47 @@
             <template v-slot:title-right>
               <img src="../../assets/img/warn1.png" width="30" height="30" alt="" />
             </template>
-            <template v-slot:content> </template>
+            <template v-slot:content>
+              <div class="right-content">
+                <div class="table">
+                  <div class="tr" v-for="(item, index) in data1" :key="index">
+                    <div class="td td-title">{{ item.name }}</div>
+                    <div class="td">{{ item.value }}</div>
+                    <div class="td">{{ item.value }}</div>
+                    <div class="td">{{ item.value }}</div>
+                    <div class="td">{{ item.value }}</div>
+                    <div class="td">{{ item.value }}</div>
+                    <div class="td">{{ item.value }}</div>
+                  </div>
+                </div>
+                <div class="next">
+                  <img src="../../assets/img/arrow-right.png" alt="" />
+                </div>
+              </div>
+            </template>
           </card>
         </div>
+      </div>
+      <div class="search2">
+        <div class="time-search search-item">
+          <span class="text">时间：</span>
+          <div class="time select">
+            <div class="year">
+              <span class="year-text">2022 年</span>
+              <img src="../../assets/img/arrow_down.png" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="crops search-item">
+          <span class="text">作物：</span>
+          <div class="types select">
+            <div class="crops-type">
+              <span class="year-text">玉米</span>
+              <img src="../../assets/img/arrow_down.png" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="search-btn">查询</div>
       </div>
       <div class="bottom">
         <div class="bottom-left">
@@ -53,7 +106,24 @@
             <template v-slot:title-right>
               <img src="../../assets/img/warn2.png" width="30" height="23" alt="" />
             </template>
-            <template v-slot:content> </template>
+            <template v-slot:content>
+              <div class="right-content">
+                <div class="table">
+                  <div class="tr" v-for="(item, index) in data2" :key="index">
+                    <div class="td td-title">{{ item.name }}</div>
+                    <div class="td">{{ item.value }}</div>
+                    <div class="td">{{ item.value }}</div>
+                    <div class="td">{{ item.value }}</div>
+                    <div class="td">{{ item.value }}</div>
+                    <div class="td">{{ item.value }}</div>
+                    <div class="td">{{ item.value }}</div>
+                  </div>
+                </div>
+                <div class="next">
+                  <img src="../../assets/img/arrow-right.png" alt="" />
+                </div>
+              </div>
+            </template>
           </card>
         </div>
       </div>
@@ -66,6 +136,7 @@ import TopHeader from "../../components/top-header/top-header.vue";
 import Card from "../../components/card/card.vue";
 import * as echarts from "echarts";
 import { options1, options2 } from "./config/chart.config";
+
 export default {
   components: { TopHeader, Card },
   data() {
@@ -82,6 +153,18 @@ export default {
       middleInfo2: { name: "生态监测" },
       bottomInfo1: { name: "作物长势检测" },
       bottomInfo2: { name: "害虫监测" },
+      data1: [
+        { name: "种植类型", value: "种植类型" },
+        { name: "种植面积", value: "种植面积" },
+        { name: "土壤墒情", value: "土壤墒情" },
+        { name: "作物长势", value: "作物长势" },
+      ],
+      data2: [
+        { name: "生长季周期", value: "3个月" },
+        { name: "病虫害作物面积", value: "2亩" },
+        { name: "分布空间", value: "空间" },
+        { name: "其他", value: "其他" },
+      ],
       options1,
       options2,
       myChart1: null,
@@ -111,11 +194,110 @@ export default {
   height: 1080px;
   background-color: #181a28;
   position: relative;
+
+  .search-btn {
+    width: 50px;
+    height: 25px;
+    color: #000;
+    text-align: center;
+    line-height: 25px;
+    border-radius: 4px;
+    background-color: #24cbe9;
+    cursor: pointer;
+  }
+
+  .search {
+    font-size: 14px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 70px;
+    top: 70px;
+
+    .text {
+      margin-right: 10px;
+    }
+
+    .time {
+      display: flex;
+      padding: 5px 20px;
+      border: solid 1px #1a3345;
+      margin-right: 30px;
+      background: linear-gradient(to bottom, #24cbe9, #24cbe9) left top / 1px 7px no-repeat,
+        linear-gradient(to right, #24cbe9, #24cbe9) left top / 7px 1px no-repeat,
+        linear-gradient(to left, #24cbe9, #24cbe9) right top / 7px 1px no-repeat,
+        linear-gradient(to bottom, #24cbe9, #24cbe9) right top / 1px 7px no-repeat,
+        linear-gradient(to top, #24cbe9, #24cbe9) bottom left / 1px 7px no-repeat,
+        linear-gradient(to right, #24cbe9, #24cbe9) bottom left / 7px 1px no-repeat,
+        linear-gradient(to left, #24cbe9, #24cbe9) bottom right / 7px 1px no-repeat,
+        linear-gradient(to top, #24cbe9, #24cbe9) bottom right / 1px 7px no-repeat;
+
+      .year {
+        margin-right: 20px;
+        cursor: pointer;
+        .year-text {
+          margin-right: 5px;
+        }
+      }
+
+      .month {
+        margin-left: 20px;
+        cursor: pointer;
+        .month-text {
+          margin-right: 5px;
+        }
+      }
+
+      img {
+        width: 12px;
+        height: 9px;
+      }
+    }
+  }
+
   .content {
     width: 100%;
     padding: 0 58px;
     margin-top: 30px;
     box-sizing: border-box;
+
+    .search2 {
+      font-size: 14px;
+      color: #fff;
+      align-items: center;
+      display: flex;
+      margin-top: 16px;
+
+      .text {
+        margin-right: 10px;
+      }
+
+      .search-item {
+        display: flex;
+        margin-right: 20px;
+        align-items: center;
+      }
+
+      .select {
+        padding: 5px 20px;
+        border: solid 1px #1a3345;
+        margin-right: 30px;
+        background: linear-gradient(to bottom, #24cbe9, #24cbe9) left top / 1px 7px no-repeat,
+          linear-gradient(to right, #24cbe9, #24cbe9) left top / 7px 1px no-repeat,
+          linear-gradient(to left, #24cbe9, #24cbe9) right top / 7px 1px no-repeat,
+          linear-gradient(to bottom, #24cbe9, #24cbe9) right top / 1px 7px no-repeat,
+          linear-gradient(to top, #24cbe9, #24cbe9) bottom left / 1px 7px no-repeat,
+          linear-gradient(to right, #24cbe9, #24cbe9) bottom left / 7px 1px no-repeat,
+          linear-gradient(to left, #24cbe9, #24cbe9) bottom right / 7px 1px no-repeat,
+          linear-gradient(to top, #24cbe9, #24cbe9) bottom right / 1px 7px no-repeat;
+      }
+
+      img {
+        width: 12px;
+        height: 9px;
+      }
+    }
 
     .top {
       width: 100%;
@@ -147,6 +329,54 @@ export default {
       .middle-right {
         width: 1054px;
         height: 100%;
+        .right-content {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          .table {
+            width: calc(100% - 47px);
+            height: 100%;
+            color: #fff;
+            padding: 24px;
+            box-sizing: border-box;
+
+            .tr {
+              width: 100%;
+              height: 63px;
+              display: flex;
+              align-items: center;
+              background-color: #1f2232;
+              margin-bottom: 5px;
+              .td {
+                flex: 1;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &.td-title {
+                  background-color: #1b1e2c;
+                }
+              }
+            }
+          }
+          .next {
+            width: 47px;
+            height: calc(100% + 10px);
+            background-color: #212436;
+            cursor: pointer;
+            position: relative;
+            top: -5px;
+            img {
+              width: 34px;
+              height: 18px;
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%) rotate(-90deg);
+            }
+          }
+        }
       }
     }
     .bottom {
@@ -186,7 +416,55 @@ export default {
       .bottom-right {
         width: 1054px;
         height: 100%;
-        margin-right: 16px;
+
+        .right-content {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          .table {
+            width: calc(100% - 47px);
+            height: 100%;
+            color: #fff;
+            padding: 24px;
+            box-sizing: border-box;
+
+            .tr {
+              width: 100%;
+              height: 63px;
+              display: flex;
+              align-items: center;
+              background-color: #1f2232;
+              margin-bottom: 5px;
+              .td {
+                flex: 1;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &.td-title {
+                  background-color: #1b1e2c;
+                }
+              }
+            }
+          }
+          .next {
+            width: 47px;
+            height: calc(100% + 10px);
+            background-color: #212436;
+            cursor: pointer;
+            position: relative;
+            top: -5px;
+            img {
+              width: 34px;
+              height: 18px;
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%) rotate(-90deg);
+            }
+          }
+        }
       }
     }
   }
