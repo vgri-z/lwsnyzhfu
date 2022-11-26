@@ -142,7 +142,7 @@ export default {
   data() {
     return {
       tabs: [
-        { name: "可视化演示", url: "/data-summary" },
+        { name: "可视化演示", url: "/machine-monitor" },
         { name: "实时监测", url: "/always-monitor" },
         { name: "数据总览", url: "/data-summary" },
       ],
