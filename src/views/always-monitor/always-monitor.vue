@@ -283,6 +283,7 @@ export default {
         padding: 5px 20px;
         border: solid 1px #1a3345;
         margin-right: 30px;
+        cursor: pointer;
         background: linear-gradient(to bottom, #24cbe9, #24cbe9) left top / 1px 7px no-repeat,
           linear-gradient(to right, #24cbe9, #24cbe9) left top / 7px 1px no-repeat,
           linear-gradient(to left, #24cbe9, #24cbe9) right top / 7px 1px no-repeat,

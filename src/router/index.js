@@ -6,7 +6,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/always-monitor",
+    redirect: "machine-monitor",
   },
   {
     path: "/data-summary",
@@ -19,6 +19,10 @@ const routes = [
   {
     path: "/always-monitor",
     component: () => import("../views/always-monitor/always-monitor.vue"),
+  },
+  {
+    path: "/machine-monitor",
+    component: () => import("../views/machine-monitor/machine-monitor.vue"),
   },
 ];
 
