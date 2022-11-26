@@ -1,117 +1,334 @@
+import * as echarts from "echarts";
 export const options1 = {
-  color: ["#1950ff", "#00cbff", "#ead400", "#ff3333"],
-  tooltip: {
-    trigger: "item",
-  },
-  legend: {
-    orient: "vertical",
-    top: "center",
-    right: "25%",
-    itemWidth: 8,
-    itemHeight: 8,
-    borderRadius: 4,
-    icon: "circle",
-    itemGap: 30,
-    textStyle: {
-      color: "#fff",
+  angleAxis: {
+    show: false,
+    max: (100 * 360) / 230, //-45度到225度，二者偏移值是270度除360度
+    type: "value",
+    startAngle: 205, //极坐标初始角度
+    splitLine: {
+      show: false,
     },
+  },
+  barMaxWidth: 5, //圆环宽度
+  radiusAxis: {
+    show: false,
+    type: "category",
+  },
+  //圆环位置和大小
+  polar: {
+    center: ["50%", "50%"],
+    radius: "170%",
   },
   series: [
     {
-      name: "农田生态系统管理",
-      type: "pie",
-      radius: "60%",
-      center: ["30%", "50%"],
+      type: "bar",
+      stack: "测试",
       data: [
-        { value: 1048, name: "物理防治" },
-        { value: 735, name: "化学防治" },
-        { value: 580, name: "生态防治" },
-        { value: 484, name: "其他" },
+        {
+          //上层圆环，显示数据
+          value: 78,
+          name: "sdfasdf",
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+              {
+                offset: 0,
+                color: "#4232e5",
+              },
+              {
+                offset: 1,
+                color: "#54fbf1",
+              },
+            ]),
+          },
+        },
       ],
-      label: {
-        show: false,
-      },
-      labelLine: {
-        show: false,
-      },
-      // emphasis: {
-      //   itemStyle: {
-      //     shadowBlur: 10,
-      //     shadowOffsetX: 0,
-      //     shadowColor: "rgba(0, 0, 0, 0.5)",
-      //   },
+      barGap: "-100%", //柱间距离,上下两层圆环重合
+      coordinateSystem: "polar",
+      roundCap: true, //顶端圆角从 v4.5.0 开始支持
+      z: 2, //圆环层级，同zindex
+      //       detail: {
+      //     valueAnimation: true,
+      //     fontSize: 25,
+      //     fontWeight: '400',
+      //     color: 'rgb(51,51,51)',
+      //     offsetCenter: [0, '40%'],
       // },
+    },
+    {
+      //下层圆环，显示最大值
+      type: "bar",
+      data: [
+        {
+          value: 100,
+          itemStyle: {
+            color: {
+              //图形渐变颜色方法，四个数字分别代表，右，下，左，上，offset表示0%到100%
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 1, //从左到右 0-1
+              y2: 0,
+              colorStops: [
+                {
+                  offset: 0,
+                  color: "#54fbf133",
+                },
+                {
+                  offset: 1,
+                  color: "#4232e533",
+                },
+              ],
+            },
+          },
+        },
+      ],
+      barGap: "-100%",
+      coordinateSystem: "polar",
+      roundCap: true,
+      z: 1,
+    },
+    {
+      stack: "测试",
+      type: "bar",
+      data: [0],
+      showBackground: false,
+      coordinateSystem: "polar",
+      roundCap: true,
+      barWidth: 10,
+      itemStyle: {
+        color: "rgba(48, 236, 166, 0.5)",
+        borderColor: "rgba(48, 236, 166, 1)",
+        borderWidth: 6,
+        shadowColor: "rgba(48, 236, 166, 0.5)",
+        shadowBlur: 15,
+        shadowOffsetY: 2,
+      },
+    },
+    {
+      name: "外部刻度",
+      type: "gauge",
+      //  center: ['20%', '50%'],
+      radius: "70%",
+      min: 0, //最小刻度
+      max: 100, //最大刻度
+      splitNumber: 4, //刻度数量
+      startAngle: 225,
+      endAngle: -45,
+      axisLine: {
+        show: false,
+        // 仪表盘刻度线
+        lineStyle: {
+          width: 1,
+          color: [[1, "#FFFFFF"]],
+        },
+      },
+      //仪表盘文字
+      axisLabel: {
+        show: false,
+      }, //刻度标签。
+      axisTick: {
+        show: false,
+      }, //刻度样式
+      splitLine: {
+        show: false,
+      }, //分隔线样式
+      detail: {
+        show: false,
+      },
+      pointer: {
+        show: false,
+      },
+      title: {
+        show: true,
+        offsetCenter: [0, "-30%"],
+        fontSize: 20,
+        color: "#fff",
+      },
+      data: [
+        {
+          value: 100,
+          name: "64%",
+          title: {
+            fontSize: 20,
+            offsetCenter: [0, "-30%"],
+          },
+        },
+        {
+          value: 100,
+          name: "正反馈",
+          title: {
+            fontSize: 12,
+            offsetCenter: [0, "35%"],
+          },
+        },
+      ],
     },
   ],
 };
 
 export const options2 = {
-  color: ["#63c9ec", "#e61e05"],
-  tooltip: {
-    trigger: "axis",
-  },
-  grid: {
-    left: "10%",
-    right: "8%",
-    bottom: "10%",
-    top: "13%",
-    containLabel: true,
-  },
-  xAxis: {
-    name: "月份",
-    nameTextStyle: {
-      color: "#fff",
-    },
-    type: "category",
-    boundaryGap: true,
-    data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-    axisTick: {
-      show: false,
-    },
-    axisLabel: {
-      color: "#fff",
-    },
-    axisLine: {
-      lineStyle: {
-        color: "#2d3047",
-      },
-    },
-  },
-  yAxis: {
-    nameTextStyle: {
-      color: "#ffffff66",
-      fontSize: 16,
-    },
+  angleAxis: {
+    show: false,
+    max: (100 * 360) / 230, //-45度到225度，二者偏移值是270度除360度
     type: "value",
-    splitNumber: 5,
-    max: 50,
-    axisLine: {
-      show: true,
-      lineStyle: {
-        color: "#2d3047",
-      },
-    },
-    axisLabel: {
-      color: "#fff",
-    },
+    startAngle: 205, //极坐标初始角度
     splitLine: {
       show: false,
     },
   },
+  barMaxWidth: 5, //圆环宽度
+  radiusAxis: {
+    show: false,
+    type: "category",
+  },
+  //圆环位置和大小
+  polar: {
+    center: ["50%", "50%"],
+    radius: "170%",
+  },
   series: [
     {
-      name: "2022",
-      type: "line",
-      symbol: "circle",
-      symbolSize: 7,
-      data: [12, 15, 23, 15, 32, 48, 31, 19, 23, 30, 24, 11],
+      type: "bar",
+      stack: "测试",
+      data: [
+        {
+          //上层圆环，显示数据
+          value: 78,
+          name: "sdfasdf",
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+              {
+                offset: 0,
+                color: "#4232e5",
+              },
+              {
+                offset: 1,
+                color: "#54fbf1",
+              },
+            ]),
+          },
+        },
+      ],
+      barGap: "-100%", //柱间距离,上下两层圆环重合
+      coordinateSystem: "polar",
+      roundCap: true, //顶端圆角从 v4.5.0 开始支持
+      z: 2, //圆环层级，同zindex
+      //       detail: {
+      //     valueAnimation: true,
+      //     fontSize: 25,
+      //     fontWeight: '400',
+      //     color: 'rgb(51,51,51)',
+      //     offsetCenter: [0, '40%'],
+      // },
     },
     {
-      name: "2021",
-      type: "line",
-      symbol: "circle",
-      symbolSize: 7,
-      data: [20, 5, 31, 23, 40, 37, 39, 22, 25, 21, 22, 21],
+      //下层圆环，显示最大值
+      type: "bar",
+      data: [
+        {
+          value: 100,
+          itemStyle: {
+            color: {
+              //图形渐变颜色方法，四个数字分别代表，右，下，左，上，offset表示0%到100%
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 1, //从左到右 0-1
+              y2: 0,
+              colorStops: [
+                {
+                  offset: 0,
+                  color: "#54fbf133",
+                },
+                {
+                  offset: 1,
+                  color: "#4232e533",
+                },
+              ],
+            },
+          },
+        },
+      ],
+      barGap: "-100%",
+      coordinateSystem: "polar",
+      roundCap: true,
+      z: 1,
+    },
+    {
+      stack: "测试",
+      type: "bar",
+      data: [0],
+      showBackground: false,
+      coordinateSystem: "polar",
+      roundCap: true,
+      barWidth: 10,
+      itemStyle: {
+        color: "rgba(48, 236, 166, 0.5)",
+        borderColor: "rgba(48, 236, 166, 1)",
+        borderWidth: 6,
+        shadowColor: "rgba(48, 236, 166, 0.5)",
+        shadowBlur: 15,
+        shadowOffsetY: 2,
+      },
+    },
+    {
+      name: "外部刻度",
+      type: "gauge",
+      //  center: ['20%', '50%'],
+      radius: "70%",
+      min: 0, //最小刻度
+      max: 100, //最大刻度
+      splitNumber: 4, //刻度数量
+      startAngle: 225,
+      endAngle: -45,
+      axisLine: {
+        show: false,
+        // 仪表盘刻度线
+        lineStyle: {
+          width: 1,
+          color: [[1, "#FFFFFF"]],
+        },
+      },
+      //仪表盘文字
+      axisLabel: {
+        show: false,
+      }, //刻度标签。
+      axisTick: {
+        show: false,
+      }, //刻度样式
+      splitLine: {
+        show: false,
+      }, //分隔线样式
+      detail: {
+        show: false,
+      },
+      pointer: {
+        show: false,
+      },
+      title: {
+        show: true,
+        offsetCenter: [0, "-30%"],
+        fontSize: 20,
+        color: "#fff",
+      },
+      data: [
+        {
+          value: 100,
+          name: "68%",
+          title: {
+            fontSize: 20,
+            offsetCenter: [0, "-30%"],
+          },
+        },
+        {
+          value: 100,
+          name: "正反馈",
+          title: {
+            fontSize: 12,
+            offsetCenter: [0, "35%"],
+          },
+        },
+      ],
     },
   ],
 };

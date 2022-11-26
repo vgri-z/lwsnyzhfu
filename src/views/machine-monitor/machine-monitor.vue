@@ -25,9 +25,70 @@
       </div>
       <div class="middle">
         <div class="middle-left">
-          <card :info="middleInfo1">
+          <card :info="middleInfo1" :is-show-title-right="false">
             <template v-slot:content>
               <div id="map"></div>
+              <div class="pos-info">
+                <pop-info :name="machineInfo.title">
+                  <div class="pop-content">
+                    <div class="count">
+                      <span class="name">农机设备总数</span>
+                      <span class="num">1</span>
+                      <span class="num">0</span>
+                      <span class="num">0</span>
+                      <span class="unit">台</span>
+                    </div>
+                    <div class="type">
+                      <span class="name">农机类型一</span>
+                      <div class="process">
+                        <div class="inner" :style="{ width: machineInfo.machineType1 + '%' }">
+                          <img src="../../assets/img/dot.png" alt="" />
+                        </div>
+                      </div>
+                      <span>{{ machineInfo.machineType1 }}</span>
+                    </div>
+                    <div class="type">
+                      <span class="name">农机类型二</span>
+                      <div class="process">
+                        <div class="inner" :style="{ width: machineInfo.machineType2 + '%' }">
+                          <img src="../../assets/img/dot.png" alt="" />
+                        </div>
+                      </div>
+                      <span>{{ machineInfo.machineType2 }}</span>
+                    </div>
+                    <div class="type">
+                      <span class="name">农机类型三</span>
+                      <div class="process">
+                        <div class="inner" :style="{ width: machineInfo.machineType3 + '%' }">
+                          <img src="../../assets/img/dot.png" alt="" />
+                        </div>
+                      </div>
+                      <span>{{ machineInfo.machineType3 }}</span>
+                    </div>
+                  </div>
+                </pop-info>
+                <pop-info :name="machineInfo2.title">
+                  <div class="pop-content">
+                    <div class="count">
+                      <span class="name">农技专家总数</span>
+                      <span class="num">1</span>
+                      <span class="num">0</span>
+                      <span class="num">0</span>
+                      <span class="unit">人</span>
+                    </div>
+                    <div class="charts">
+                      <div class="chart-infos">
+                        <div class="chart" ref="chartRef1" style="width: 98px; height: 86px"></div>
+                        <div class="name">作物种植</div>
+                      </div>
+                      <div class="chart-infos">
+                        <div class="chart" ref="chartRef2" style="width: 98px; height: 86px"></div>
+                        <div class="name">虫害防治</div>
+                      </div>
+                    </div>
+                  </div>
+                </pop-info>
+              </div>
             </template>
           </card>
         </div>
@@ -99,10 +160,13 @@
 <script>
 import TopHeader from "../../components/top-header/top-header.vue";
 import Card from "../../components/card/card.vue";
+import PopInfo from "../../components/pop-info/pop-info.vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
+import * as echarts from "echarts";
+import { options1, options2 } from "./config/chart.config";
 
 export default {
-  components: { TopHeader, Card },
+  components: { TopHeader, Card, PopInfo },
   data() {
     return {
       tabs: ["可视化演示", "实时监测", "数据总览"],
@@ -128,17 +192,48 @@ export default {
         { name: "某某村", machineCount: "50", muCount: "1000", machineType: "开垦 播种", passRate: "100%" },
       ],
       data2: [],
+      machineInfo: {
+        title: "农机信息展示",
+        machineCount: "100",
+        machineType1: 60,
+        machineType2: 30,
+        machineType3: 10,
+      },
+      machineInfo2: {
+        title: "农技服务信息展示",
+      },
+      options1,
+      options2,
+      myChart1: null,
+      map: null,
+      mouseTool: null,
+      overlays: [],
+      auto: null,
+      placeSearch: null,
+      geoCoder: null,
+      markersPosition: [],
+      markers: [],
     };
   },
-  created() {
-    this.initMap();
+  mounted() {
+    this.initMap("circle");
+    this.setOptions1();
+    this.setOptions2();
   },
   methods: {
     initMap() {
       AMapLoader.load({
         key: "59e50354d1ff0466892b69be3add3518",
         version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-        plugins: [], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+        plugins: [
+          "AMap.Scale",
+          "AMap.ToolBar",
+          "AMap.AutoComplete",
+          "AMap.PlaceSearch",
+          "AMap.ControlBar",
+          "AMap.MouseTool",
+          "AMap.Geocoder",
+        ], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
       })
         .then((AMap) => {
           // 初始化地图
@@ -148,10 +243,40 @@ export default {
             center: [106.340054, 38.102655], //中心点坐标  郑州
             resizeEnable: true,
           });
+          this.mouseTool = new AMap.MouseTool(this.map);
+          this.geoCoder = new AMap.Geocoder();
+          this.map.on("click", (e) => {
+            // console.log(e);
+            this.markersPosition = [e.lnglat.lng, e.lnglat.lat];
+            this.removeMarker();
+            this.setMapMarker();
+          });
         })
         .catch((e) => {
           console.log(e);
         });
+    },
+    // 设置点击位置的标记
+    setMapMarker() {
+      let marker = new AMap.Marker({
+        map: this.map,
+        position: this.markersPosition,
+      });
+      // 将 markers 添加到地图
+      this.markers.push(marker);
+    },
+    removeMarker() {
+      if (this.markers) {
+        this.map.remove(this.markers);
+      }
+    },
+    setOptions1() {
+      this.myChart1 = echarts.init(this.$refs.chartRef1);
+      this.myChart1.setOption(this.options1);
+    },
+    setOptions2() {
+      this.myChart1 = echarts.init(this.$refs.chartRef2);
+      this.myChart1.setOption(this.options2);
     },
   },
 };
@@ -328,12 +453,88 @@ export default {
   }
 }
 
+.pos-info {
+  position: absolute;
+  top: 100px;
+  right: 10px;
+}
+.pop-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .count {
+    margin-bottom: 20px;
+    .num {
+      width: 25px;
+      height: 30px;
+      font-size: 28px;
+      text-align: center;
+      line-height: 30px;
+      padding: 0 4px;
+      background-color: #2b2f45;
+      margin-right: 5px;
+      &:last-child {
+        margin-right: 30;
+      }
+    }
+    .name {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+    .unit {
+      font-size: 18px;
+      margin-left: 10px;
+    }
+  }
+  .type {
+    display: flex;
+    margin-bottom: 20px;
+    .name {
+      margin-right: 10px;
+    }
+    .process {
+      width: 250px;
+      height: 4px;
+      background-color: #383947;
+      border-radius: 2px;
+      margin-right: 10px;
+      position: relative;
+      top: 6px;
+      .inner {
+        height: 4px;
+        border-radius: 2px;
+        background: linear-gradient(to right, #424350 0%, #fff 100%);
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        img {
+          width: 12px;
+          height: 12px;
+          position: absolute;
+          right: -1px;
+          top: -4px;
+        }
+      }
+    }
+  }
+
+  .charts {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    .chart-infos:first-child {
+      margin-right: 80px;
+    }
+  }
+}
+
 #map {
   width: 450px;
   height: 716px;
   overflow: hidden;
-  background-color: #24cbe9;
   margin-left: 130px;
   margin-top: 16px;
+  color: #54fbf133;
 }
 </style>
