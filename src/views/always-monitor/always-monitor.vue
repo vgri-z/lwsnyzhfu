@@ -141,7 +141,11 @@ export default {
   components: { TopHeader, Card },
   data() {
     return {
-      tabs: ["可视化演示", "实时监测", "数据总览"],
+      tabs: [
+        { name: "可视化演示", url: "/data-summary" },
+        { name: "实时监测", url: "/always-monitor" },
+        { name: "数据总览", url: "/data-summary" },
+      ],
       infos: [
         { name: "总作业亩数", icon: require("../../assets/img/card.png"), value: "20", unit: "万亩" },
         { name: "总农机数量", icon: require("../../assets/img/card.png"), value: "50", unit: "台" },

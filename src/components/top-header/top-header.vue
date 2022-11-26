@@ -2,18 +2,19 @@
   <div class="top-header">
     <div class="title">灵武市智慧农业服务平台</div>
     <div class="tabs">
-      <div class="arrow left">
+      <div class="arrow left" @click="previous">
         <img src="../../assets/img/arrow-right.png" alt="" />
       </div>
       <div
         v-for="(item, index) in tabs"
-        :key="item"
+        :key="item.name"
         class="tab-item"
         :class="currentTabIndex === index ? 'active' : ''"
+        @click="tabClick(item, index)"
       >
-        {{ item }}
+        {{ item.name }}
       </div>
-      <div class="arrow right">
+      <div class="arrow right" @click="next">
         <img src="../../assets/img/arrow-right.png" alt="" />
       </div>
     </div>
@@ -31,7 +32,11 @@ export default {
   props: {
     tabs: {
       type: Array,
-      default: () => ["可视化演示", "数据总览", "实时监测"],
+      default: () => [
+        { name: "可视化演示", url: "/always-monitor" },
+        { name: "数据总览", url: "/data-summary" },
+        { name: "实时监测", url: "/always-monitor" },
+      ],
     },
   },
   data() {
@@ -39,6 +44,20 @@ export default {
       // tabs: ["可视化演示", "数据总览", "实时监测"],
       currentTabIndex: 1,
     };
+  },
+  methods: {
+    previous() {
+      this.currentTabIndex--;
+      this.$router.push(this.tabs[this.currentTabIndex].url);
+    },
+    next() {
+      this.currentTabIndex++;
+      this.$router.push(this.tabs[this.currentTabIndex].url);
+    },
+    tabClick(item, index) {
+      console.log(item, index);
+      this.$router.push(item.url);
+    },
   },
 };
 </script>

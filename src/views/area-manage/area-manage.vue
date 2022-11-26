@@ -63,7 +63,11 @@ export default {
   components: { TopHeader, Card },
   data() {
     return {
-      tabs: ["数据总览", "地块管理", "实时监测"],
+      tabs: [
+        { name: "数据总览", url: "/data-summary" },
+        { name: "地块管理", url: "/area-manage" },
+        { name: "实时监测", url: "/always-monitor" },
+      ],
       leftInfo: { name: "地块历史种植流程预览" },
       middleInfo: { name: "农事跟踪管理" },
       rightTopInfo: { name: "地块流程信息" },
