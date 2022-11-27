@@ -17,14 +17,20 @@
             <img src="../../assets/img/validate.png" alt="" />
           </el-form-item>
         </el-form>
-        <div class="login-btn">登录</div>
+        <div class="login-btn" @click="login">登录</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    login() {
+      this.$router.push("/data-summary");
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

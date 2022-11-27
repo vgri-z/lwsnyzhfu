@@ -76,7 +76,7 @@
 import TopHeader from "../../components/top-header/top-header.vue";
 import Card from "../../components/card/card.vue";
 import * as echarts from "echarts";
-import { options1, options2, options3, options4, options5 } from "./config/chart.config";
+import { options1, options2, options3, options4 } from "./config/chart.config";
 import { nxMapOption } from "./config/map.config";
 export default {
   components: { TopHeader, Card },

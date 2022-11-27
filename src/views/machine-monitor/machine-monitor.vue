@@ -5,15 +5,21 @@
     <div class="search">
       <span class="text">时间：</span>
       <div class="time">
-        <div class="year">
-          <span class="year-text">2022 年</span>
-          <img src="../../assets/img/arrow_down.png" alt="" />
-        </div>
+        <el-popover ref="yearPopupRef" placement="bottom" width="150" trigger="click">
+          <select-content @selectClick="yearChange"></select-content>
+          <div class="year" slot="reference">
+            <span class="year-text">{{ year }}</span>
+            <img src="../../assets/img/arrow_down.png" alt="" />
+          </div>
+        </el-popover>
         <div class="split">-</div>
-        <div class="month">
-          <span class="month-text">6 月</span>
-          <img src="../../assets/img/arrow_down.png" alt="" />
-        </div>
+        <el-popover ref="monthPopupRef" placement="bottom" width="150" trigger="click">
+          <select-content @selectClick="monthChange" :select-items="months"></select-content>
+          <div class="month" slot="reference">
+            <span class="month-text">{{ month }}</span>
+            <img src="../../assets/img/arrow_down.png" alt="" />
+          </div>
+        </el-popover>
       </div>
       <div class="search-btn">查询</div>
     </div>
@@ -162,11 +168,12 @@ import TopHeader from "../../components/top-header/top-header.vue";
 import Card from "../../components/card/card.vue";
 import PopInfo from "../../components/pop-info/pop-info.vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
+import SelectContent from "@/components/select-content/select-content.vue";
 import * as echarts from "echarts";
 import { options1, options2 } from "./config/chart.config";
 
 export default {
-  components: { TopHeader, Card, PopInfo },
+  components: { TopHeader, Card, PopInfo, SelectContent },
   data() {
     return {
       tabs: [
@@ -206,6 +213,10 @@ export default {
       machineInfo2: {
         title: "农技服务信息展示",
       },
+      years: ["2022年", "2021年", "2020年", "2019年"],
+      year: "2022年",
+      months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+      month: "6月",
       options1,
       options2,
       myChart1: null,
@@ -281,6 +292,14 @@ export default {
     setOptions2() {
       this.myChart1 = echarts.init(this.$refs.chartRef2);
       this.myChart1.setOption(this.options2);
+    },
+    yearChange(data) {
+      this.year = data.item;
+      this.$refs.yearPopupRef.doClose();
+    },
+    monthChange(data) {
+      this.month = data.item;
+      this.$refs.monthPopupRef.doClose();
     },
   },
 };

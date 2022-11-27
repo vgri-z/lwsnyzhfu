@@ -5,15 +5,25 @@
     <div class="search">
       <span class="text">时间：</span>
       <div class="time">
-        <div class="year">
+        <el-popover ref="yearPopupRef" placement="bottom" width="150" trigger="click">
+          <select-content @selectClick="yearChange"></select-content>
+          <div class="year" slot="reference">
+            <span class="year-text">{{ year }}</span>
+            <img src="../../assets/img/arrow_down.png" alt="" />
+          </div>
+        </el-popover>
+        <!-- <div class="year">
           <span class="year-text">2022 年</span>
           <img src="../../assets/img/arrow_down.png" alt="" />
-        </div>
+        </div> -->
         <div class="split">-</div>
-        <div class="month">
-          <span class="month-text">6 月</span>
-          <img src="../../assets/img/arrow_down.png" alt="" />
-        </div>
+        <el-popover ref="monthPopupRef" placement="bottom" width="150" trigger="click">
+          <select-content @selectClick="monthChange" :select-items="months"></select-content>
+          <div class="month" slot="reference">
+            <span class="month-text">{{ month }}</span>
+            <img src="../../assets/img/arrow_down.png" alt="" />
+          </div>
+        </el-popover>
       </div>
       <div class="search-btn">查询</div>
     </div>
@@ -63,21 +73,27 @@
       <div class="search2">
         <div class="time-search search-item">
           <span class="text">时间：</span>
-          <div class="time select">
-            <div class="year">
-              <span class="year-text">2022 年</span>
-              <img src="../../assets/img/arrow_down.png" alt="" />
+          <el-popover ref="yearPopupRef" placement="bottom" width="150" trigger="click">
+            <select-content @selectClick="yearChange" :select-items="years"></select-content>
+            <div class="time select" slot="reference">
+              <div class="year">
+                <span class="year-text">{{ year }}</span>
+                <img src="../../assets/img/arrow_down.png" alt="" />
+              </div>
             </div>
-          </div>
+          </el-popover>
         </div>
         <div class="crops search-item">
           <span class="text">作物：</span>
-          <div class="types select">
-            <div class="crops-type">
-              <span class="year-text">玉米</span>
-              <img src="../../assets/img/arrow_down.png" alt="" />
+          <el-popover ref="typePopupRef" placement="bottom" width="150" trigger="click">
+            <select-content @selectClick="typeChange" :select-items="types"></select-content>
+            <div class="types select" slot="reference">
+              <div class="crops-type">
+                <span class="year-text">{{ type }}</span>
+                <img src="../../assets/img/arrow_down.png" alt="" />
+              </div>
             </div>
-          </div>
+          </el-popover>
         </div>
         <div class="search-btn">查询</div>
       </div>
@@ -134,11 +150,12 @@
 <script>
 import TopHeader from "../../components/top-header/top-header.vue";
 import Card from "../../components/card/card.vue";
+import SelectContent from "@/components/select-content/select-content.vue";
 import * as echarts from "echarts";
 import { options1, options2 } from "./config/chart.config";
 
 export default {
-  components: { TopHeader, Card },
+  components: { TopHeader, Card, SelectContent },
   data() {
     return {
       tabs: [
@@ -169,6 +186,12 @@ export default {
         { name: "分布空间", value: "空间" },
         { name: "其他", value: "其他" },
       ],
+      years: ["2022年", "2021年", "2020年", "2019年"],
+      year: "2022年",
+      months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+      month: "6月",
+      types: ["玉米", "水稻", "高粱"],
+      type: "玉米",
       options1,
       options2,
       myChart1: null,
@@ -180,6 +203,18 @@ export default {
     this.setOptions2();
   },
   methods: {
+    yearChange(data) {
+      this.year = data.item;
+      this.$refs.yearPopupRef.doClose();
+    },
+    monthChange(data) {
+      this.month = data.item;
+      this.$refs.monthPopupRef.doClose();
+    },
+    typeChange(data) {
+      this.type = data.item;
+      this.$refs.typePopupRef.doClose();
+    },
     setOptions1() {
       this.myChart1 = echarts.init(this.$refs.chartRef1);
       this.myChart1.setOption(this.options1);
